@@ -5,19 +5,32 @@ import { PokemonModule } from './pokemon/pokemon.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SeedModule } from './seed/seed.module';
 import { CommonModule } from './common/common.module';
+import { ConfigModule } from '@nestjs/config';
+import { EnvConfiguration } from './config/env.config';
+import { JoiValidationSchema } from './config/joi.validation';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      load: [EnvConfiguration],
+      validationSchema: JoiValidationSchema
+    }),
+
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
 
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/pokemon?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.9', {
+    MongooseModule.forRoot(process.env.MONGODB, {
       connectionFactory: (connection) => {
         console.log('Conexión a MongoDB exitosa');
         return connection;
       },
     }),
+
+    
+    /* MongooseModule.forRoot( process.env.MONGODB, {
+      dbName: 'pokemonsdb'
+    }), */
 
 
     PokemonModule,
@@ -29,4 +42,7 @@ import { CommonModule } from './common/common.module';
     CommonModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+
+
+}
