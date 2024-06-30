@@ -4,6 +4,7 @@ import { join } from 'path';
 import { PokemonModule } from './pokemon/pokemon.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SeedModule } from './seed/seed.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -23,6 +24,9 @@ import { SeedModule } from './seed/seed.module';
 
 
     SeedModule,
+
+
+    CommonModule,
   ],
 })
 export class AppModule {}
